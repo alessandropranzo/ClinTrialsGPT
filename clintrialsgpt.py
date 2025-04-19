@@ -178,6 +178,7 @@ if prompt := st.chat_input("Welcome!"):
                     st.markdown(
                         "> Trials in context:  \n> "
                         + ",  \n> ".join(clinical_trials_context[0])
+                        + "  \n> (To clear the above context in memory, press the *'Reset Context'* button)"
                     )
                 else:
                     st.write(

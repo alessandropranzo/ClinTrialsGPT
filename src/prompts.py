@@ -18,11 +18,11 @@ If the user explicitly provides values for any of the fields, use them directly.
 Output your answer strictly in the following Python dictionary format:
 `{"condition": "", "terms": "", "intervention": ""}`
 
-- Use strings for all values.
-- If multiple values apply, separate them with commas in the string.
-- If a value cannot be determined, leave it as an empty string.
+- Use strings for all keys and values.
+- If multiple values apply for a key, separate them with commas in the string.
+- If a value cannot be determined for a key, leave it as an empty string.
 - Do not generate any additional explanation or text outside the dictionary format.
-- If the user's question is not related to clinical trials or does not require fetching such data (e.g., small talk like “how are you?”), return the dictionary with all empty string values.
+- If the user's question is not related to clinical trials or does not require fetching such data (e.g., small talk like “how are you?”), return the dictionary with all empty string values for each key.
 
 Now, analyze the user's query below and return the output in the specified format:
 
@@ -37,7 +37,7 @@ Your task is as follows:
 2. After summarizing, answer the user's query enclosed within the <user> tags using information grounded in the <rag_context>.
 3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
 4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the trials in context.
-5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Reset Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
 
 Now process the following context and query:
 
@@ -53,7 +53,7 @@ Your task is as follows:
 2. Then answer the user's current query enclosed within the <user> tags using information grounded in the <rag_context>.
 3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
 4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the most relevant trial in context in your opinion.
-5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Reset Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
 
 Now process the following context and query:
 
