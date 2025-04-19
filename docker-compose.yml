@@ -1,0 +1,9 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  clintrialsgpt:
+    build: .
+    ports:
+      - "8501:8501"
+    container_name: clintrialsgpt_app

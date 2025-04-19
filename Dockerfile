@@ -9,7 +9,7 @@ COPY . .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir \
-    openai==0.28 \
+    openai==1.59.8 \
     streamlit==1.41.1
 
 # Expose port 8501 for Streamlit
