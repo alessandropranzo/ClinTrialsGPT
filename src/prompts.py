@@ -1,26 +1,63 @@
-system_prompt = """You are an helpful assistant and an expert in providing responses grounded in the US Clinical Trials database. When the user asks a question, the most relevant clinical trials information will be provided to you as a prompt context, which you will use to ground your response to the user's question and answer without making up things or hallucinating non-existent clinical trials. However you should fully try to connect things in the clinical trials prompt context and the user's question to make your answer reasonable and sensible. If something isn't clear, don't guess anything but just ask the user for clarification."""
+system_prompt = '''You are a helpful and knowledgeable assistant specializing in clinical trial information from the U.S. Clinical Trials database. You will be provided with relevant context from this database before each question. Use this context to ground your responses accurately and avoid making up or hallucinating clinical trials or details not present in the context. Your goal is to fully utilize and connect the context with the user’s question to provide sensible, informative, and grounded answers. If the provided information is unclear, incomplete, or insufficient to answer confidently, ask the user for clarification rather than speculating.'''
 
-intro_assistant_prompt = """Hi! I'm your expert assistant for anything that requires responses grounded in the latest US clinical trials database! How can I help you today? :)"""
+intro_assistant_prompt = """Hi there! I’m your assistant specializing in information from the latest U.S. Clinical Trials database. Feel free to ask about ongoing studies, treatments, conditions, or anything else you’d like to explore. How can I assist you today?"""
 
 # '{}' below will be set to the user's latest message in code
-agentic_prompt_for_rag_check = """Please analyze the user's question below the <user></user> tags, and infer the appropriate terms for the three fields defined between <fields></fields> tags below in the context of clinical trials. If the user directly provides the values for these fields, then use those terms instead of inferring the terms yourself.
+agentic_prompt_for_rag_check = """Please analyze the user's question enclosed within the <user></user> tags, and extract or infer the appropriate values for the three fields defined below, all in the context of clinical trials. Use the field definitions provided to guide your extraction.
+
+If the user explicitly provides values for any of the fields, use them directly. Otherwise, infer the most relevant terms based on the user's intent.
 
 <field>
-1. condition: The disease, disorder, syndrome, illness, or injury that is being inquired. Conditions may also include other health-related issues, such as lifespan, quality of life, and health risks.
+1. condition: The disease, disorder, syndrome, illness, or injury mentioned in the user's query. This may also include general health-related concerns such as lifespan, quality of life, or health risks.
 
-2. terms: This field is used to narrow a search in retrieving relevant information from the clinical trials database. For example, you may enter the name of a drug or the NCT number of a clinical study if the user provides one or if it can be inferred. This is to limit the search to study records that contain these words.
+2. terms: Additional keywords to refine the search. These may include drug names, specific study identifiers (e.g., NCT numbers), or other relevant search terms. Use them if provided or if they can be reasonably inferred.
 
-3. intervention: A process or action that is the focus of a clinical study. Interventions include drugs, medical devices, procedures, vaccines, and other products that are either investigational or already available. Interventions can also include noninvasive approaches, such as education or modifying diet and exercise. If the user explicitly mentioned such a term in the query, then use that, or based on the explanation, infer such a term yourself.
+3. intervention: The process, treatment, or action that is the focus of the inquiry. This may include drugs, devices, procedures, vaccines, behavioral approaches, or other interventions. Use explicit mentions when available; otherwise, infer based on context.
 </field>
 
-You should generate a response that strictly follows the python dictionary format: `{"condition": "", "terms": "", "intervention": ""}` where keys and values are both strings. If multiple terms are possible for a value, use commas to separate each term in the value string. If you cannot infer something, leave it as a empty string for the value of that key. Do not generate any extra output tokens other than the above format. If the user's query does not need any knowledge of clinical trials data (e.g. conversational questions like "how are you?" etc), then please return the same output format but with empty strings for all values for all keys.
+Output your answer strictly in the following Python dictionary format:
+`{"condition": "", "terms": "", "intervention": ""}`
 
-Here's the user's query that you should analyse as discussed above and generate the aforementioned output format:
+- Use strings for all values.
+- If multiple values apply, separate them with commas in the string.
+- If a value cannot be determined, leave it as an empty string.
+- Do not generate any additional explanation or text outside the dictionary format.
+- If the user's question is not related to clinical trials or does not require fetching such data (e.g., small talk like “how are you?”), return the dictionary with all empty string values.
+
+Now, analyze the user's query below and return the output in the specified format:
+
+"""
+
+prompt_before_rag_context_to_prime_model = """You will be given a context enclosed in <rag_context> tags and a user query enclosed in <user> tags.
+
+First, carefully read and interpret the <rag_context>, which contains a nested JSON response from the U.S. Clinical Trials database. Key names in the JSON use CamelCase notation—please interpret them accordingly. The context includes information about one or more clinical trials relevant to the user's query.
+
+Your task is as follows:
+1. Begin by summarizing the most clinically important points from each trial in the <rag_context>. Include study purpose, interventions, conditions, outcomes, and other relevant details.
+2. After summarizing, answer the user's query enclosed within the <user> tags using information grounded in the <rag_context>.
+3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
+4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the trials in context.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question.
+
+Now process the following context and query:
+
+"""
+
+
+prompt_before_rag_context_to_prime_model_no_summary = """You will be given a context enclosed in <rag_context> tags and a user query enclosed in <user> tags.
+
+First, carefully read and interpret the <rag_context>, which contains a nested JSON response from the U.S. Clinical Trials database. Key names in the JSON use CamelCase notation—please interpret them accordingly. The context includes information about one or more clinical trials relevant to the user's initial query.
+
+Your task is as follows:
+1. Understand the context provided to you within <rag_context> tags, especially trials that are highly relevant to the user's current query.
+2. Then answer the user's current query enclosed within the <user> tags using information grounded in the <rag_context>.
+3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
+4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the most relevant trial in context in your opinion.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question.
+
+Now process the following context and query:
 
 
 """
 
-prompt_before_rag_context_to_prime_model = """Use the following context within <rag_context> html-like tags to answer the query within <user> html-like tags that follows the context. Before answering the question, summarize the most important points of each clinical trial in the <rag_context> first and then proceed to answering the user's specific question. Please thoroughly understand clinically important information encoded in the <rag_context> which is a nested JSON response from a Clinical Trial Database for various related clinical trials. Interpret the JSON response values based on the key names which follow Camel Case. Please answer the user's questions based on this data. Please be factual and always cite the clinical trial source when you use a certain piece of information from there. Note that if the query does not ask any particular question, assume the user needs to still know an overview/summary of each clinical trial in the <rag_context>. Please have your answers grounded in the <rag_context> provided. If there is no query at all that makes sense within <user> tags, then ignore the context provided and ask for a clear query. Here are the contexts and the query:  \n"""
 
-
-prompt_before_rag_context_to_prime_model_no_summary = """Use the following context within <rag_context> html-like tags to answer the query within <user> html-like tags that follows the context. Please thoroughly understand clinically important information encoded in the <rag_context> which is a nested JSON response from a Clinical Trial Database for various related clinical trials. Interpret the JSON response values based on the key names which follow Camel Case. Please answer the user's questions based on this data. Please be factual and always cite the clinical trial source when you use a certain piece of information from there. Note that if the query does not ask any particular question, ask what the user wants to know explicitly. Please have your answers grounded in the <rag_context> provided. If there is no query at all that makes sense within <user> tags, then ignore the context provided and ask for a clear query. Here are the contexts and the query:  \n"""
