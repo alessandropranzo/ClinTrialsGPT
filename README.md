@@ -14,6 +14,6 @@ Here is an example screenshot:
 ### Installing on your local machine
 After installing the required python packages in `requirements.txt`, run `streamlit run clintrialsgpt.py` and open [http://localhost:8501/](http://localhost:8501/). Voila!
 
-## Installing on Docker (preferred)
+### Running on Docker (preferred)
 
 First, install [Docker](https://www.docker.com/). Then run `docker-compose up --build` and open [http://0.0.0.0:8501/](http://0.0.0.0:8501/). Voila!
