@@ -4,6 +4,8 @@
 
 *(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew](https://www.linkedin.com/in/philipmathewmd/).*
 
+Tl;dr. Quick installation: `docker run -p 8501:8501 vinbhaskara/clintrialsgpt:latest`
+
 Chat just as you would with ChatGPT -- except that any query relevant to clinical trials will trigger an API call to the US Clinical Trials database with relevant search terms inferred from the user's query (i.e. "agentic retrieval"). The responses to queries are grounded in the clinical trial data retrieved with appropriate citations. 
 
 **Docker hub image link:** [vinbhaskara/clintrialsgpt:latest](https://hub.docker.com/r/vinbhaskara/clintrialsgpt)
