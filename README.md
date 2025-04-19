@@ -32,3 +32,11 @@ Run `docker-compose up --build` to build your own local image, and open [http://
 
 ### Installing on your local machine
 After installing the required python packages in `requirements.txt`, run `streamlit run clintrialsgpt.py` and open [http://localhost:8501/](http://localhost:8501/). Add your OpenAI API key and start using!
+
+## Disclaimer
+
+This tool is for informational and educational purposes only. It does not provide medical advice, diagnosis, or treatment. The information is retrieved from publicly available clinical trials data and may be incomplete, outdated, or misinterpreted.
+
+By using this app, you acknowledge that all use is at your own risk. The creators accept no responsibility or liability for any outcomes, decisions, or actions taken based on the information provided.
+
+Always consult a qualified healthcare professional for medical advice.
