@@ -126,7 +126,7 @@ if prompt := st.chat_input("Ask anything"):
         # retrieve from the clinical trials database via the API
         if (clinical_trials_context is not None) or (
             (agentic_response_dict is not None)
-            and (sum([len(i.strip()) for i in agentic_response_dict.keys()]) > 0)
+            and (sum([len(i.strip()) for i in agentic_response_dict.values()]) > 0)
         ):
             try:
                 if clinical_trials_context is None:
