@@ -12,7 +12,7 @@ Chat just as you would with ChatGPT -- except that any query relevant to clinica
 
 **Here is an example screenshot:**
 
-![screenshot](screenshot.jpeg)
+![screenshot](screenshot.png)
 
 ## How to run the app?
 

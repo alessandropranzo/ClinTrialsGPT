@@ -15,7 +15,7 @@ class DotDict(dict):
             self[key] = value
 
 
-def clinical_trials_api(condition, terms, intervention, topK=5):
+def clinical_trials_api(condition="", terms="", intervention="", topK=5):
     # Define the URL and make the request
     url = "https://clinicaltrials.gov/api/v2/studies"
 

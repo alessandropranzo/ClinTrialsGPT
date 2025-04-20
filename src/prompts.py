@@ -3,14 +3,14 @@ system_prompt = '''You are a helpful and knowledgeable assistant specializing in
 intro_assistant_prompt = """Hi there! I’m your assistant specializing in information from the latest U.S. Clinical Trials database. Feel free to ask about ongoing studies, treatments, conditions, or anything else you’d like to explore. How can I assist you today?"""
 
 # '{}' below will be set to the user's latest message in code
-agentic_prompt_for_rag_check = """Please analyze the user's question enclosed within the <user></user> tags, and extract or infer the appropriate values for the three fields defined below, all in the context of clinical trials. Use the field definitions provided to guide your extraction.
+agentic_prompt_for_rag_check = """Please analyze all the user's text enclosed within the <user></user> tags, and extract or infer the appropriate values for the three fields defined below, all in the context of clinical trials. Use the field definitions provided to guide your extraction. These extracted field values will be used to call the ClinicalTrials.gov API to search and fetch results for establishing context.
 
 If the user explicitly provides values for any of the fields, use them directly. Otherwise, infer the most relevant terms based on the user's intent.
 
 <field>
 1. condition: The disease, disorder, syndrome, illness, or injury mentioned in the user's query. This may also include general health-related concerns such as lifespan, quality of life, or health risks.
 
-2. terms: Additional keywords to refine the search. These may include drug names, specific study identifiers (e.g., NCT numbers), or other relevant search terms. Use them if provided or if they can be reasonably inferred.
+2. terms: Additional keywords to refine the search. These may include drug names, specific study identifiers (e.g., NCT numbers which are unique identification codes to each clinical study and the format is "NCT" followed by an 8-digit number), or other relevant search terms. Use them if provided or if they can be reasonably inferred. If the user included NCT ids in their text, then include those in the terms as well unless they explicitly ask not to use them despite being present in the text.
 
 3. intervention: The process, treatment, or action that is the focus of the inquiry. This may include drugs, devices, procedures, vaccines, behavioral approaches, or other interventions. Use explicit mentions when available; otherwise, infer based on context.
 </field>
@@ -24,7 +24,7 @@ Output your answer strictly in the following Python dictionary format:
 - Do not generate any additional explanation or text outside the dictionary format.
 - If the user's question is not related to clinical trials or does not require fetching such data (e.g., small talk like “how are you?”), return the dictionary with all empty string values for each key.
 
-Now, analyze the user's query below and return the output in the specified format:
+Now, analyze and follow all of the user's texts so far below and return the output in the specified format:
 
 """
 

@@ -29,14 +29,16 @@ if api_key != api_key_file:
     with open("./src/openai-api-key.txt", "w") as f:
         f.write(api_key.strip())
 
-cols = st.columns(4)
+
+def func_remove_context():
+    st.session_state["clinical_trials_context"] = None
+    global clinical_trials_context
+    clinical_trials_context = None
+
+
+cols = st.columns(1)
 
 with cols[0]:
-    if st.button("Reset Context"):
-        if "clinical_trials_context" in st.session_state.keys():
-            del st.session_state["clinical_trials_context"]
-
-with cols[1]:
     if st.button("Restart App"):
         for key in st.session_state.keys():
             del st.session_state[key]
@@ -80,7 +82,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Welcome!"):
+if prompt := st.chat_input("Ask anything"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -91,14 +93,14 @@ if prompt := st.chat_input("Welcome!"):
 
         if clinical_trials_context is None:
             # agentic system - ask the model to see if this is relevant query for meddra
-            latest_client_message = dict(
-                [i for i in all_messages if i["role"] == "user"][-1]
+            all_client_messages = list(
+                [dict(i) for i in all_messages if i["role"] == "user"]
             )
-
+            latest_client_message = all_client_messages[-1]
             latest_client_message["content"] = (
                 prompts.agentic_prompt_for_rag_check
                 + "\n<user>\n"
-                + latest_client_message["content"]
+                + "\n".join([i["content"] for i in all_client_messages])
                 + "\n</user>\n"
             )
 
@@ -128,6 +130,7 @@ if prompt := st.chat_input("Welcome!"):
         ):
             try:
                 if clinical_trials_context is None:
+                    # Join conditions by AND because someone may be interested in a specific combination of conditions
                     condition = " AND ".join(
                         [
                             i.strip()
@@ -136,13 +139,15 @@ if prompt := st.chat_input("Welcome!"):
                             .split(",")
                         ]
                     )
-                    terms = " AND ".join(
+                    # Join by OR because terms is more like a filtering criteria to narrow down things
+                    terms = " OR ".join(
                         [
                             i.strip()
                             for i in agentic_response_dict["terms"].strip().split(",")
                         ]
                     )
-                    intervention = " AND ".join(
+                    # Join by OR because one may be interested in looking at multiple OR interactions (e.g. drug or surgical)
+                    intervention = " OR ".join(
                         [
                             i.strip()
                             for i in agentic_response_dict["intervention"]
@@ -150,11 +155,13 @@ if prompt := st.chat_input("Welcome!"):
                             .split(",")
                         ]
                     )
-                    st.write(
-                        "> `Condition`: [{}], `Intervention`: [{}], `Terms`: [{}]".format(
-                            condition, intervention, terms
+                    if len(condition) + len(intervention) + len(terms) > 0:
+                        st.markdown(
+                            """> **Searching ClinicalTrials.gov:**  
+                            `Condition`: [{}], `Intervention`: [{}], `Terms`: [{}]""".format(
+                                condition, intervention, terms
+                            )
                         )
-                    )
 
                 if (
                     (clinical_trials_context is not None)
@@ -176,10 +183,12 @@ if prompt := st.chat_input("Welcome!"):
 
                 if len(clinical_trials_context[0]) > 0:
                     st.markdown(
-                        "> Trials in context:  \n> "
+                        "> **Trials in context:**  \n> "
                         + ",  \n> ".join(clinical_trials_context[0])
-                        + "  \n> (To clear the above context in memory, press the *'Reset Context'* button)"
+                        + "  \n\n> **To re-do ClinicalTrials.gov search:** Press the `Remove Context` button before typing in your next message."
                     )
+                    st.button("Remove Context", on_click=func_remove_context)
+
                 else:
                     st.write(
                         "No relevant entries found in the clinical trials database."
@@ -187,7 +196,9 @@ if prompt := st.chat_input("Welcome!"):
                 # change the context only if the similarity is high enough
                 user_query = all_messages[-1]["content"]
 
-                if len(clinical_trials_context[0]) > 0:
+                if (clinical_trials_context is not None) and (
+                    len(clinical_trials_context[0]) > 0
+                ):
 
                     if st.session_state["clinical_trials_context"] is None:
                         all_messages[-1]["content"] = (
