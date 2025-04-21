@@ -26,11 +26,11 @@ First, install [Docker](https://www.docker.com/).
 
 #### Pull image and run (easiest and preferred way)
 
-After installing Docker, open the Terminal/Command Prompt and run `docker run -p 8501:8501 vinbhaskara/clintrialsgpt:latest` and that's it! Open [http://0.0.0.0:8501/](http://0.0.0.0:8501/) and get going!
+After installing Docker, open the Terminal/Command Prompt and run `docker run -p 8501:8501 vinbhaskara/clintrialsgpt:latest` and that's it! Open [http://localhost:8501/](http://localhost:8501/) and get going!
 
 #### Or, build your own image
 
-Run `docker-compose up --build` to build your own local image, and open [http://0.0.0.0:8501/](http://0.0.0.0:8501/). Voila!
+Run `docker-compose up --build` to build your own local image, and open [http://localhost:8501/](http://localhost:8501/). Voila!
 
 ### 2. Installing on your local machine
 After installing the required python packages in `requirements.txt`, run `streamlit run clintrialsgpt.py` and open [http://localhost:8501/](http://localhost:8501/). Add your OpenAI API key and start using!
