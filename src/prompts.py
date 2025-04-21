@@ -37,7 +37,7 @@ Your task is as follows:
 2. After summarizing, answer the user's query enclosed within the <user> tags using information grounded in the <rag_context>.
 3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
 4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the trials in context.
-5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Reset Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Remove Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
 
 Now process the following context and query:
 
@@ -53,7 +53,7 @@ Your task is as follows:
 2. Then answer the user's current query enclosed within the <user> tags using information grounded in the <rag_context>.
 3. Always be factual. If referencing specific data or claims, cite the clinical trial using its NCT ID.
 4. If the user's query is vague or missing but still related to clinical trials, provide a general overview of the most relevant trial in context in your opinion.
-5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Reset Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
+5. If the query does not relate to clinical trials or is unclear (e.g., small talk or noise), disregard the <rag_context> entirely and instead ask the user to provide a clear clinical question. Remind the user that they can clear the current Clinical Trials context in memory by pressing the "Remove Context" button on the app. This will let the app fetch a new set of Clinical Trials data relevant to the user's most recent query.
 
 Now process the following context and query:
 
