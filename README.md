@@ -2,7 +2,7 @@
 
 **ChatGPT grounded in the latest US Clinical Trials database!**
 
-*(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew](https://www.linkedin.com/in/philipmathewmd/).*
+*(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew, MD](https://www.linkedin.com/in/philipmathewmd/).*
 
 Tl;dr. Quick installation: `docker run -p 8501:8501 vinbhaskara/clintrialsgpt:latest`
 

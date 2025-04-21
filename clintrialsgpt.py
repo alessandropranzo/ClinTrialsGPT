@@ -11,7 +11,7 @@ from src.clin_trials_api import clinical_trials_api
 st.title("*ClinTrialsGPT v1.0*")
 st.markdown("**ChatGPT grounded in the latest US Clinical Trials database.**")
 st.markdown(
-    "*(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Philip Mathew](https://www.linkedin.com/in/philipmathewmd/).*"
+    "*(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew, MD](https://www.linkedin.com/in/philipmathewmd/).*"
 )
 
 model_options = [
