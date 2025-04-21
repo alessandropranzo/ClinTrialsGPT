@@ -9,7 +9,7 @@ import copy
 from src.clin_trials_api import clinical_trials_api
 
 st.title("*ClinTrialsGPT v1.0*")
-st.markdown("**ChatGPT grounded in the latest US Clinical Trials database.**")
+st.markdown("**Query the ClinicalTrials.gov database in real-time!**")
 st.markdown(
     "*(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew, MD](https://www.linkedin.com/in/philipmathewmd/).*"
 )

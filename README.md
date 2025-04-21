@@ -1,6 +1,6 @@
 # ClinTrialsGPT v1.0
 
-**ChatGPT grounded in the latest US Clinical Trials database!**
+**Query the ClinicalTrials.gov database in real-time!**
 
 *(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew, MD](https://www.linkedin.com/in/philipmathewmd/).*
 
