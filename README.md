@@ -1,6 +1,6 @@
 # ClinTrialsGPT v1.0
 
-**Query the ClinicalTrials.gov database in real-time!**
+**Harness the power of LLMs to synthesize and reason over live clinical trial data -— bridging trial evidence and insight in real time!**
 
 *(c) Copyright 2025. [Vin Bhaskara](https://vinbhaskara.github.io/) and [Dr. Philip Mathew, MD](https://www.linkedin.com/in/philipmathewmd/).*
 
