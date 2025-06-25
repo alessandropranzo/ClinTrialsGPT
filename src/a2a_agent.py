@@ -8,11 +8,11 @@ from typing import Dict, Any, List, Optional
 from a2a.server.agent_execution import AgentExecutor, RequestContext
 from a2a.server.context import State
 from a2a.server.events import EventQueue
-from a2a.utils import new_agent_text_message
+from a2a.utils import new_agent_text_message, new_artifact, completed_task
 from src.chat_openai_utils import OpenAIClient
 from src.clin_trials_api import clinical_trials_api
 import src.prompts as prompts
-from a2a.types import TextPart
+from a2a.types import Part, TextPart
 
 
 class ClinTrialsA2AAgent:
@@ -186,8 +186,19 @@ class ClinTrialsAgentExecutor(AgentExecutor):
         response = self.agent.process_message(user_message)
         
         # Create the response message
-        response_message = new_agent_text_message(response)
-        await event_queue.enqueue_event(response_message)
+        parts = [
+            Part(
+                root=TextPart(kind = "text", text=response)
+            )
+        ]
+        await event_queue.enqueue_event(
+            completed_task(
+                context.task_id,
+                context.context_id,
+                [new_artifact(parts, "Agent response")],
+                [context.message]
+            )
+        )
     
     async def cancel(self, context: RequestContext, event_queue) -> None:
         """
