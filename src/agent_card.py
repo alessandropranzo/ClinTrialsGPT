@@ -3,7 +3,7 @@ Agent Card for ClinTrialsGPT A2A Agent
 """
 
 from a2a.types import AgentCard, AgentSkill, AgentCapabilities
-
+import subprocess
 
 def create_agent_card() -> AgentCard:
     """
@@ -22,13 +22,15 @@ def create_agent_card() -> AgentCard:
             "Search for trials related to heart disease"
         ]
     )
+
+    ip_address = subprocess.run("ipconfig getifaddr en0", shell=True, capture_output=True, text=True).stdout.strip()
     
     # Create the agent card
     agent_card = AgentCard(
         name="ClinTrialsGPT",
         description="A specialized AI agent that provides information from the U.S. ClinicalTrials.gov database. This agent can search for clinical trials, studies, treatments, and medical research based on user queries.",
         version="1.0.0",
-        url="http://localhost:8000",
+        url=f"http://{ip_address}:8000",
         capabilities=AgentCapabilities(
             streaming=False,
             # pushNotifications=False,
