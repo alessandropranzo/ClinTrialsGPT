@@ -2,8 +2,24 @@
 version: '3.8'
 
 services:
-  clintrialsgpt:
+  # A2A Server (default)
+  clintrialsgpt-a2a:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - RUN_MODE=a2a
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./src/openai-api-key.txt:/app/src/openai-api-key.txt:ro
+
+  # Original Streamlit App
+  clintrialsgpt-streamlit:
     build: .
     ports:
       - "8501:8501"
-    container_name: clintrialsgpt_app
+    environment:
+      - RUN_MODE=streamlit
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./src/openai-api-key.txt:/app/src/openai-api-key.txt:ro

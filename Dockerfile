@@ -8,12 +8,13 @@ WORKDIR /app
 COPY . .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir \
-    openai==1.59.8 \
-    streamlit==1.41.1
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose port 8501 for Streamlit
-EXPOSE 8501
+# Expose ports for both Streamlit and A2A server
+EXPOSE 8501 8000
 
-# Start Ollama in the background and launch Streamlit
-CMD ["sh", "-c", "streamlit run clintrialsgpt.py --server.port=8501 --server.address=0.0.0.0"]
+# Default to A2A server, but allow override
+ENV RUN_MODE=a2a
+
+# Start the appropriate service based on RUN_MODE
+CMD ["sh", "-c", "if [ \"$RUN_MODE\" = \"streamlit\" ]; then streamlit run clintrialsgpt.py --server.port=8501 --server.address=0.0.0.0; else python a2a_server.py; fi"]

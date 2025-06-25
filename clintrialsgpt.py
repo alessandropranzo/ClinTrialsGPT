@@ -2,6 +2,7 @@
 Run as `streamlit run clintrialsgpt.py`
 """
 
+import os
 import streamlit as st
 from src.chat_openai_utils import OpenAIClient
 import src.prompts as prompts
@@ -20,14 +21,20 @@ model_options = [
 ]
 selected_option = st.selectbox("Choose an LLM:", model_options, index=1)
 
-with open("./src/openai-api-key.txt", "r") as f:
-    api_key_file = f.read().strip()
+# with open("./src/openai-api-key.txt", "r") as f:
+#     api_key_file = f.read().strip()
 
-api_key = st.text_input("OpenAI API Key: ", type="password", value=api_key_file)
-if api_key != api_key_file:
-    st.session_state["client"] = OpenAIClient(api_key)
-    with open("./src/openai-api-key.txt", "w") as f:
-        f.write(api_key.strip())
+# api_key = st.text_input("OpenAI API Key: ", type="password", value=api_key_file)
+# if api_key != api_key_file:
+#     st.session_state["client"] = OpenAIClient(api_key)
+#     with open("./src/openai-api-key.txt", "w") as f:
+#         f.write(api_key.strip())
+
+# api_key = os.getenv("OPENAI_API_KEY")
+# Log API key (mock key for demo)
+# st.write("Using API Key:", api_key)
+st.session_state["client"] = OpenAIClient()
+st.session_state["client_name"] = selected_option
 
 
 def func_remove_context():
@@ -50,7 +57,7 @@ TOP_NUMBER_OF_TRIALS_TO_CONSIDER = 8
 if ("client" not in st.session_state.keys()) or (
     "gpt" not in st.session_state["client_name"]
 ):
-    st.session_state["client"] = OpenAIClient(api_key)
+    st.session_state["client"] = OpenAIClient()
     st.session_state["client_name"] = "gpt"
 
 
